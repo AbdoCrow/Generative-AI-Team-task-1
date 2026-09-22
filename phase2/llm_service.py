@@ -8,10 +8,14 @@ from tools import check_stock_tool
 from data_access import check_stock
 from data_access import flag_shortage
 from data_access import list_by_category
+from data_access import get_part
 from google import genai
 from dotenv import load_dotenv
+from pathlib import Path
 import json
 
+ENV_PATH = Path(__file__).resolve().parent / ".env"
+load_dotenv(ENV_PATH)
 load_dotenv()
 
 # this can be done using mcp server but I don't want to add complexity to it
@@ -48,7 +52,9 @@ def ask_gemini(message: str, session_id: str):
                     result = list_by_category(step.arguments["category"])
                 elif step.name == "flag_shortage":
                     result = flag_shortage(step.arguments["item_name"])
-
+                elif step.name == "get_part":
+                    part = get_part(step.arguments["name"])
+                    result = {"part": part} if part else {"error": f"Part '{step.arguments['name']}' not found."}
                 else:
                     result = {
                         "error": f"Unknown tool requested: {step.name}"

@@ -35,7 +35,7 @@ def ask_gemini(message: str, session_id: str):
     prev_id = SESSION_STORE.get(session_id) if session_id else None
 
     interaction = client.interactions.create(
-        model="gemini-3.7-flash",
+        model="gemini-3.6-flash",
         input=message,
         tools=TOOLS,
         previous_interaction_id=prev_id
@@ -61,7 +61,7 @@ def ask_gemini(message: str, session_id: str):
                     }
 
                 interaction = client.interactions.create(
-                    model="gemini-3.7-flash",
+                    model="gemini-3.6-flash",
                     previous_interaction_id=interaction.id,
                     tools=TOOLS,
                     input=[

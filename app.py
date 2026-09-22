@@ -53,9 +53,11 @@ with tab1:
         st.write(answer)
 
 with tab2:
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    chat_container = st.container(height=500)
+    with chat_container:
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
     user_message = st.chat_input("Ask about the inventory...")
     if user_message:
@@ -66,8 +68,9 @@ with tab2:
             }
         )
 
-        with st.chat_message("user"):
-            st.markdown(user_message)
+        with chat_container:
+            with st.chat_message("user"):
+                st.markdown(user_message)
 
         try:
             response = requests.post(
@@ -92,8 +95,9 @@ with tab2:
             }
         )
 
-        with st.chat_message("assistant"):
-            st.markdown(reply)
+        with chat_container:
+            with st.chat_message("assistant"):
+                st.markdown(reply)
 
 with st.sidebar:
     st.title("Inventory")
